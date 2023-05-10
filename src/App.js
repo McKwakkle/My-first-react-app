@@ -1,18 +1,41 @@
-import logo from './logo.svg';
 import './App.css';
+import { useState } from 'react';
 
 function App() {
-let name = 'Kellan'
+  const [showEvents, setShowEvents] = useState(true)
+  const [events, setEvents] = useState([
+    { title: "kellan's birthday bash", id: 1 },
+    { title: "wessel's live stream", id: 2 },
+    { title: "race on moo moo farm", id: 3 }
+  ])
 
-const handleClick = () => {
-  name = 'Wessel'
-  console.log(name)
-}
+  console.log(showEvents)
+
+  const handleClick = (id) => {
+    setEvents((prevEvents) => {
+      return prevEvents.filter((event) => {
+        return id !== event.id
+      })
+    })
+    console.log(id)
+  }
 
   return (
     <div className="App">
-     <h1>My name is {name}</h1>
-     <button onClick={handleClick}>Change name</button>
+      {showEvents && (<div>
+        <button onClick={() => setShowEvents(false)}>Hide Events</button>
+      </div>
+      )}
+      {!showEvents && (<div>
+        <button onClick={() => setShowEvents(true)}>Show Events</button>
+      </div>
+      )}
+      {showEvents && events.map((event, index) => (
+        <div key={event.id}>
+          <h2>{index} - {event.title}</h2>
+          <button onClick={() => handleClick(event.id)}>delete event</button>
+        </div>
+      ))}
     </div>
   );
 }
